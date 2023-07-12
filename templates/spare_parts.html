@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+
+{% block title %}Results{% endblock %}
+
+{% block content %}
+    <h1>Náhradní díly</h1>
+    {% for result in results %}
+        <div class="parent">
+            <h3>{{ result['parents']|join(" - ") }}</h3>
+            <ul>
+                {% for item in result['items'] %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endblock %}

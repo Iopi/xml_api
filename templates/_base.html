@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Astra Export XML API</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="/products/count">Počet produktů</a>-->
+                        <a class="nav-link {% if page == 'product_count' %}active{% endif %}" href="{{ url_for('product_count') }}">Počet produktů</a>
+                    </li>
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="/products/names">Názvy produktů</a>-->
+                        <a class="nav-link {% if page == 'product_names' %}active{% endif %}" href="{{ url_for('product_names') }}">Názvy produktů</a>
+
+                    </li>
+                    <li class="nav-item">
+<!--                        <a class="nav-link" href="/products/spare_parts">Náhradní díly</a>-->
+                        <a class="nav-link {% if page == 'product_spare_parts' %}active{% endif %}" href="{{ url_for('product_spare_parts') }}">Náhradní díly</a>
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</body>
+</html>

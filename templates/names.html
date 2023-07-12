@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% block title %}Názvy produktů{% endblock %}
+
+{% block content %}
+    <h1>Názvy produktů</h1>
+    <ul>
+        {% for name in product_names %}
+            <li>{{ name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

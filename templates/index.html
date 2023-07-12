@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+
+{% block title %}XML API{% endblock %}
+
+{% block content %}
+    <h1>XML API</h1>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('product_count') }}">Počet produktů</a></li>
+        <li><a href="{{ url_for('product_names') }}">Názvy produktů</a></li>
+        <li><a href="{{ url_for('product_spare_parts') }}">Náhradní díly</a></li>
+    </ul>
+{% endblock %}
