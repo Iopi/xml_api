@@ -48,15 +48,10 @@ def product_names():
 
 
 def find_items_recursive(element, parent_categories=[], results=[]):
-    item_child = element.find("item")
-    if item_child is not None:
+    if element.find("item") is not None:
         parent_categories = parent_categories + [element]
         item_names = [item.attrib.get("name") for item in element.findall(".//item")]
         parent_category_names = [category.attrib.get("name") for category in parent_categories]
-
-        # print("Item Names:", item_names)
-        # print("Parent Category Names:", parent_category_names)
-        # print()
 
         result = {
             "items": item_names,
@@ -77,6 +72,33 @@ def find_categories_recursive(element, parent_categories=[], results=[]):
         find_categories_recursive(child, parent_categories + [element], results)
 
 
+def find_items_recursive_parts(element, parent_categories, results):
+    if element.find("part") is not None:
+        for part in element.findall("part"):
+            if part.find("item") is not None:
+                parent_categories_new = parent_categories + [element]
+                item_names = [item.attrib.get("name") for item in element.findall(".//item")]
+                parent_category_names = [category.attrib.get("name") for category in parent_categories_new] + [part.attrib.get("itemName")]
+
+                result = {
+                    "items": item_names,
+                    "parents": parent_category_names[1:]
+                }
+                results.append(result)
+
+    else:
+        for child in element.findall("category"):
+            find_items_recursive_parts(child, parent_categories + [element], results)
+
+
+def find_categories_recursive_parts(element, parent_categories=[], results=[]):
+    if element.attrib.get("type") == "parts":
+        find_items_recursive_parts(element, parent_categories, results)
+
+    for child in element.findall("category"):
+        find_categories_recursive_parts(child, parent_categories + [element], results)
+
+
 @app.route('/products/spare_parts')
 def product_spare_parts():
     xml_path = f"{c.DATA_PATH}/{c.XML_NAME}"
@@ -86,13 +108,14 @@ def product_spare_parts():
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    categories_new = root.find(".//categoriesNew")
     results = []
-    find_categories_recursive(categories_new, [], results)
+    categories_with_parts = root.find(".//categoriesWithParts")
+    find_categories_recursive_parts(categories_with_parts, [], results)
 
+    # categories_new = root.find(".//categoriesNew")
+    # find_categories_recursive(categories_new, [], results)
 
     return render_template('spare_parts.html', results=results, page='product_spare_parts')
-    # return render_template('spare_parts.html', spare_parts=spare_parts, page='spare_parts')
 
 if __name__ == '__main__':
     app.run()
