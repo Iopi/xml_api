@@ -6,9 +6,9 @@
     <h1>Náhradní díly</h1>
     {% for result in results %}
         <div class="parent">
-            <h3>{{ result['parents']|join(" - ") }}</h3>
+            <h3>{{ result['name']}}</h3>
             <ul>
-                {% for item in result['items'] %}
+                {% for item in result['item_parts'] %}
                     <li>{{ item }}</li>
                 {% endfor %}
             </ul>

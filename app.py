@@ -196,8 +196,22 @@ def product_spare_parts():
     root = tree.getroot()
 
     results = []
-    categories_with_parts = root.find(".//categoriesWithParts")
-    find_categories_recursive_parts(categories_with_parts, [], results)
+    items = root.find("items")
+    item_elements = items.findall(".//item")
+    for item in item_elements:
+        parts = item.find("parts")
+        if parts is not None:
+            item_name = item.attrib.get('name')
+            item_parts = [item.attrib.get("name") for item in parts.findall(".//item")]
+
+            result = {
+                "name": item_name,
+                "item_parts": item_parts
+            }
+            results.append(result)
+
+    #     categories_with_parts = root.find(".//categoriesWithParts")
+    # find_categories_recursive_parts(categories_with_parts, [], results)
 
     return render_template('spare_parts.html', results=results, page='product_spare_parts')
 
