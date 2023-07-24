@@ -50,9 +50,9 @@ def product_count():
     tree = ET.parse(xml_path)
     root = tree.getroot()
     items = root.find("items")
-    product_count = len(items.findall(".//item"))
+    product_count = len(items.findall("item"))
     discontinued_items = root.find("discontinuedItems")
-    dis_product_count = len(discontinued_items.findall(".//item"))
+    dis_product_count = len(discontinued_items.findall("item"))
 
     return render_template('count.html', prod_count=product_count, dis_prod_count = dis_product_count, page='product_count')
 
@@ -75,7 +75,7 @@ def product_names():
     root = tree.getroot()
 
     items = root.find("items")
-    product_names = [product.attrib['name'] for product in items.findall(".//item")]
+    product_names = [product.attrib['name'] for product in items.findall("item")]
 
     return render_template('names.html', product_names=product_names, page='product_names')
 
@@ -103,7 +103,7 @@ def product_spare_parts():
 
     results = []
     items = root.find("items")
-    item_elements = items.findall(".//item")
+    item_elements = items.findall("item")
     for item in item_elements:
         parts = item.find("parts")
         if parts is not None:
