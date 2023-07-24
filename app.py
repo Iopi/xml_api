@@ -48,9 +48,12 @@ def product_count():
 
     tree = ET.parse(xml_path)
     root = tree.getroot()
-    product_count = len(root.findall(".//item"))
+    items = root.find("items")
+    product_count = len(items.findall(".//item"))
+    discontinued_items = root.find("discontinuedItems")
+    dis_product_count = len(discontinued_items.findall(".//item"))
 
-    return render_template('count.html', product_count=product_count, page='product_count')
+    return render_template('count.html', prod_count=product_count, dis_prod_count = dis_product_count, page='product_count')
 
 
 @app.route('/products/names')
@@ -70,7 +73,8 @@ def product_names():
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    product_names = [product.attrib['name'] for product in root.findall(".//item")]
+    items = root.find("items")
+    product_names = [product.attrib['name'] for product in items.findall(".//item")]
 
     return render_template('names.html', product_names=product_names, page='product_names')
 
